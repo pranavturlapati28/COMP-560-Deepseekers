@@ -1,5 +1,8 @@
-# COMP 560 Final Project Abstract  
+# COMP 560 Final Project Abstract 
 **Group: DeepSeekers**
+
+*Members: Ishaan Balakrishnan, Prateek Mishra, Pranav Turlapati, Sujay Patel, Vamsi Palukuri*
+
 
 We will utilize AI to create a Recipe Generator using images of ingredients. The basic idea is to feed the AI pictures of various ingredients, which a large language model (LLM) and a visual language model will use to generate a recipe containing only those ingredients.
 
