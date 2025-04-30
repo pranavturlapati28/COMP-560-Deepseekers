@@ -1,0 +1,38 @@
+.venv
+venv/Python/results/
+Python/results/
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+*.so
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore model checkpoints (big files)
+*.pt
+*.bin
+*.safetensors
+Python/results/
+
+# Ignore environment variables
+.env
+
+# Ignore system files
+.DS_Store
+
+# Ignore VS Code settings
+.vscode/
+
+# Ignore virtual environments
+venv/
+.env/
+.venv/
+
+# Ignore logs
+*.log
+logs/
+
+# Ignore HuggingFace cache (if using transformers)
+~/.cache/huggingface/
+.env
