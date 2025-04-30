@@ -1,375 +1,199 @@
-% partial rewrite of the LaTeX2e package for submissions to the
-% Conference on Neural Information Processing Systems (NeurIPS):
+\makeatletter
+\renewcommand{\@noticestring}{}  % removes the conference notice
+\makeatother
+
+\documentclass{article}
+
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2023
+
+
+% ready for submission
+\usepackage[final]{main}
+
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%\usepackage[preprint]{neurips_2023}
+
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2023}
+
+
+% to avoid loading the natbib package, add option nonatbib:
+%    \usepackage[nonatbib]{neurips_2023}
+
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{graphicx}       % for including graphics
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}         % colors
+
+
+\title{Using LLM's to Generate Live Analytics}
+
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
 %
-% - uses more LaTeX conventions
-% - line numbers at submission time replaced with aligned numbers from
-%   lineno package
-% - \nipsfinalcopy replaced with [final] package option
-% - automatically loads times package for authors
-% - loads natbib automatically; this can be suppressed with the
-%   [nonatbib] package option
-% - adds foot line to first page identifying the conference
-% - adds preprint option for submission to e.g. arXiv
-% - conference acronym modified
-%
-% Roman Garnett (garnett@wustl.edu) and the many authors of
-% nips15submit_e.sty, including MK and drstrip@sandia
-%
-% last revision: March 2023
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
 
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{neurips_2023}[2023/03/31 NeurIPS 2023 submission/camera-ready style file]
 
-% declare final option, which creates camera-ready copy
-\newif\if@neuripsfinal\@neuripsfinalfalse
-\DeclareOption{final}{
-  \@neuripsfinaltrue
-}
-
-% declare nonatbib option, which does not load natbib in case of
-% package clash (users can pass options to natbib via
-% \PassOptionsToPackage)
-\newif\if@natbib\@natbibtrue
-\DeclareOption{nonatbib}{
-  \@natbibfalse
-}
-
-% declare preprint option, which creates a preprint version ready for
-% upload to, e.g., arXiv
-\newif\if@preprint\@preprintfalse
-\DeclareOption{preprint}{
-  \@preprinttrue
-}
-
-\ProcessOptions\relax
-
-% determine whether this is an anonymized submission
-\newif\if@submission\@submissiontrue
-\if@neuripsfinal\@submissionfalse\fi
-\if@preprint\@submissionfalse\fi
-
-% fonts
-\renewcommand{\rmdefault}{ptm}
-\renewcommand{\sfdefault}{phv}
-
-% change this every year for notice string at bottom
-\newcommand{\@neuripsordinal}{37th}
-\newcommand{\@neuripsyear}{2023}
-\newcommand{\@neuripslocation}{New Orleans}
-
-% acknowledgments
-\usepackage{environ}
-\newcommand{\acksection}{\section*{Acknowledgments and Disclosure of Funding}}
-\NewEnviron{ack}{%
-  \acksection
-  \BODY
+\author{
+  Pranav Turlapati\quad
+  Vamsi Palukuri\quad
+  Sujay Patel\quad
+  Prateek Mishra \quad
+  Ishaan Balakrishnan \\
+  University of North Carolina at Chapel Hill \\
+  pran@unc.edu, vamsip@unc.edu, sujayp@unc.edu, prateekm@unc.edu, ishaanb@unc.edu
 }
 
 
-% load natbib unless told otherwise
-\if@natbib
-  \RequirePackage{natbib}
-\fi
 
-% set page geometry
-\usepackage[verbose=true,letterpaper]{geometry}
-\AtBeginDocument{
-  \newgeometry{
-    textheight=9in,
-    textwidth=5.5in,
-    top=1in,
-    headheight=12pt,
-    headsep=25pt,
-    footskip=30pt
-  }
-  \@ifpackageloaded{fullpage}
-    {\PackageWarning{neurips_2023}{fullpage package not allowed! Overwriting formatting.}}
-    {}
-}
-
-\widowpenalty=10000
-\clubpenalty=10000
-\flushbottom
-\sloppy
+\begin{document}
 
 
-% font sizes with reduced leading
-\renewcommand{\normalsize}{%
-  \@setfontsize\normalsize\@xpt\@xipt
-  \abovedisplayskip      7\p@ \@plus 2\p@ \@minus 5\p@
-  \abovedisplayshortskip \z@ \@plus 3\p@
-  \belowdisplayskip      \abovedisplayskip
-  \belowdisplayshortskip 4\p@ \@plus 3\p@ \@minus 3\p@
-}
-\normalsize
-\renewcommand{\small}{%
-  \@setfontsize\small\@ixpt\@xpt
-  \abovedisplayskip      6\p@ \@plus 1.5\p@ \@minus 4\p@
-  \abovedisplayshortskip \z@  \@plus 2\p@
-  \belowdisplayskip      \abovedisplayskip
-  \belowdisplayshortskip 3\p@ \@plus 2\p@   \@minus 2\p@
-}
-\renewcommand{\footnotesize}{\@setfontsize\footnotesize\@ixpt\@xpt}
-\renewcommand{\scriptsize}{\@setfontsize\scriptsize\@viipt\@viiipt}
-\renewcommand{\tiny}{\@setfontsize\tiny\@vipt\@viipt}
-\renewcommand{\large}{\@setfontsize\large\@xiipt{14}}
-\renewcommand{\Large}{\@setfontsize\Large\@xivpt{16}}
-\renewcommand{\LARGE}{\@setfontsize\LARGE\@xviipt{20}}
-\renewcommand{\huge}{\@setfontsize\huge\@xxpt{23}}
-\renewcommand{\Huge}{\@setfontsize\Huge\@xxvpt{28}}
+\maketitle
 
-% sections with less space
-\providecommand{\section}{}
-\renewcommand{\section}{%
-  \@startsection{section}{1}{\z@}%
-                {-2.0ex \@plus -0.5ex \@minus -0.2ex}%
-                { 1.5ex \@plus  0.3ex \@minus  0.2ex}%
-                {\large\bf\raggedright}%
-}
-\providecommand{\subsection}{}
-\renewcommand{\subsection}{%
-  \@startsection{subsection}{2}{\z@}%
-                {-1.8ex \@plus -0.5ex \@minus -0.2ex}%
-                { 0.8ex \@plus  0.2ex}%
-                {\normalsize\bf\raggedright}%
-}
-\providecommand{\subsubsection}{}
-\renewcommand{\subsubsection}{%
-  \@startsection{subsubsection}{3}{\z@}%
-                {-1.5ex \@plus -0.5ex \@minus -0.2ex}%
-                { 0.5ex \@plus  0.2ex}%
-                {\normalsize\bf\raggedright}%
-}
-\providecommand{\paragraph}{}
-\renewcommand{\paragraph}{%
-  \@startsection{paragraph}{4}{\z@}%
-                {1.5ex \@plus 0.5ex \@minus 0.2ex}%
-                {-1em}%
-                {\normalsize\bf}%
-}
-\providecommand{\subparagraph}{}
-\renewcommand{\subparagraph}{%
-  \@startsection{subparagraph}{5}{\z@}%
-                {1.5ex \@plus 0.5ex \@minus 0.2ex}%
-                {-1em}%
-                {\normalsize\bf}%
-}
-\providecommand{\subsubsubsection}{}
-\renewcommand{\subsubsubsection}{%
-  \vskip5pt{\noindent\normalsize\rm\raggedright}%
-}
 
-% float placement
-\renewcommand{\topfraction      }{0.85}
-\renewcommand{\bottomfraction   }{0.4}
-\renewcommand{\textfraction     }{0.1}
-\renewcommand{\floatpagefraction}{0.7}
+\begin{abstract}
+  While statistics and analytics have been extensively applied in sports analyses, leveraging real-time speech and commentary data to generate meaningful visual analytics in Sports games remains underexplored. In this paper, we propose a novel approach that integrates audio event recognition, large language models (LLMs), and statistical visualization techniques to enhance the understanding of basketball events in real time. Our method captures live commentary, segments speech based on semantic transitions between game events, and utilizes an LLM to determine whether specific segments warrant visualization. By converting spoken descriptions into structured variables—such as player identities, relevant statistics, and team information—we dynamically generate insightful visualizations. To ensure the reliability of our outputs, we further develop a classification model trained to predict potential inaccuracies in the decision-making process, significantly reducing erroneous visualizations. Experimental results demonstrate that our proposed method outperforms conventional real-time analytics approaches, providing more accurate and contextually relevant visualizations. Our framework offers a practical solution for augmenting live sports broadcasts with analytically meaningful, real-time graphical insights derived from natural language commentary.
 
-\newlength{\@neuripsabovecaptionskip}\setlength{\@neuripsabovecaptionskip}{7\p@}
-\newlength{\@neuripsbelowcaptionskip}\setlength{\@neuripsbelowcaptionskip}{\z@}
+\end{abstract}
 
-\setlength{\abovecaptionskip}{\@neuripsabovecaptionskip}
-\setlength{\belowcaptionskip}{\@neuripsbelowcaptionskip}
 
-% swap above/belowcaptionskip lengths for tables
-\renewenvironment{table}
-  {\setlength{\abovecaptionskip}{\@neuripsbelowcaptionskip}%
-   \setlength{\belowcaptionskip}{\@neuripsabovecaptionskip}%
-   \@float{table}}
-  {\end@float}
+\section{Introduction}
 
-% footnote formatting
-\setlength{\footnotesep }{6.65\p@}
-\setlength{\skip\footins}{9\p@ \@plus 4\p@ \@minus 2\p@}
-\renewcommand{\footnoterule}{\kern-3\p@ \hrule width 12pc \kern 2.6\p@}
-\setcounter{footnote}{0}
+\paragraph{Data}
 
-% paragraph formatting
-\setlength{\parindent}{\z@}
-\setlength{\parskip  }{5.5\p@}
+Our study utilizes highlight segments from NBA basketball games sourced from YouTube
+videos of the most recent season. We randomly selected 20 different NBA games, each
+containing approximately 40 distinct speech segments, or plays, on average. Each data
+point comprises one to two sentences of commentary describing a specific play. To efficiently
+preprocess this data, we employed a large language model (LLM) to segment YouTube
+transcripts into meaningful commentary units, facilitating easy scalability for larger datasets.
+1
+These segments provide rich descriptive information from announcers, capturing details of
+player actions, team interactions, and key game events, serving as the foundational data for
+our real-time analytics and visualization framework.
 
-% list formatting
-\setlength{\topsep       }{4\p@ \@plus 1\p@   \@minus 2\p@}
-\setlength{\partopsep    }{1\p@ \@plus 0.5\p@ \@minus 0.5\p@}
-\setlength{\itemsep      }{2\p@ \@plus 1\p@   \@minus 0.5\p@}
-\setlength{\parsep       }{2\p@ \@plus 1\p@   \@minus 0.5\p@}
-\setlength{\leftmargin   }{3pc}
-\setlength{\leftmargini  }{\leftmargin}
-\setlength{\leftmarginii }{2em}
-\setlength{\leftmarginiii}{1.5em}
-\setlength{\leftmarginiv }{1.0em}
-\setlength{\leftmarginv  }{0.5em}
-\def\@listi  {\leftmargin\leftmargini}
-\def\@listii {\leftmargin\leftmarginii
-              \labelwidth\leftmarginii
-              \advance\labelwidth-\labelsep
-              \topsep  2\p@ \@plus 1\p@    \@minus 0.5\p@
-              \parsep  1\p@ \@plus 0.5\p@ \@minus 0.5\p@
-              \itemsep \parsep}
-\def\@listiii{\leftmargin\leftmarginiii
-              \labelwidth\leftmarginiii
-              \advance\labelwidth-\labelsep
-              \topsep    1\p@ \@plus 0.5\p@ \@minus 0.5\p@
-              \parsep    \z@
-              \partopsep 0.5\p@ \@plus 0\p@ \@minus 0.5\p@
-              \itemsep \topsep}
-\def\@listiv {\leftmargin\leftmarginiv
-              \labelwidth\leftmarginiv
-              \advance\labelwidth-\labelsep}
-\def\@listv  {\leftmargin\leftmarginv
-              \labelwidth\leftmarginv
-              \advance\labelwidth-\labelsep}
-\def\@listvi {\leftmargin\leftmarginvi
-              \labelwidth\leftmarginvi
-              \advance\labelwidth-\labelsep}
+We utilized real-time basketball data from the NBA 2024-2025 season, specifically sourced
+from comprehensive box scores available through the NBA API. The dataset includes de-
+tailed box scores for each NBA game played during the season, comprising essential player
+performance statistics. Each entry contains data points such as GAME ID (unique iden-
+tifier for each game), TEAM ID (unique identifier for teams), TEAM ABBREVIATION,
+TEAM CITY, PLAYER ID (unique identifier for each player), PLAYER NAME, and PLAYER NICKNAM
+The dataset also includes specific gameplay metrics: minutes played (MIN), field goals
+made (FGM) and attempted (FGA), field goal percentage (FG PCT), three-point shots
+made (FG3M) and attempted (FG3A), three-point percentage (FG3 PCT), free throws
+made (FTM) and attempted (FTA), free throw percentage (FT PCT), offensive rebounds
+(OREB), defensive rebounds (DREB), total rebounds (REB), assists (AST), steals (STL),
+blocks (BLK), turnovers (TO), personal fouls (PF), points scored (PTS), and plus-minus
+(PLUS MINUS).
+This comprehensive statistical dataset provides detailed insights into player and team
+performance throughout the NBA season, serving as the foundational data source for gen-
+erating meaningful real-time visual analytics.
 
-% create title
-\providecommand{\maketitle}{}
-\renewcommand{\maketitle}{%
-  \par
-  \begingroup
-    \renewcommand{\thefootnote}{\fnsymbol{footnote}}
-    % for perfect author name centering
-    \renewcommand{\@makefnmark}{\hbox to \z@{$^{\@thefnmark}$\hss}}
-    % The footnote-mark was overlapping the footnote-text,
-    % added the following to fix this problem               (MK)
-    \long\def\@makefntext##1{%
-      \parindent 1em\noindent
-      \hbox to 1.8em{\hss $\m@th ^{\@thefnmark}$}##1
-    }
-    \thispagestyle{empty}
-    \@maketitle
-    \@thanks
-    \@notice
-  \endgroup
-  \let\maketitle\relax
-  \let\thanks\relax
-}
+\paragraph{Motivation and Goals}
 
-% rules for title box at top of first page
-\newcommand{\@toptitlebar}{
-  \hrule height 4\p@
-  \vskip 0.25in
-  \vskip -\parskip%
-}
-\newcommand{\@bottomtitlebar}{
-  \vskip 0.29in
-  \vskip -\parskip
-  \hrule height 1\p@
-  \vskip 0.09in%
-}
+The rising popularity of sports broadcasts has highlighted the increasing need for contextual and analytically-driven commentary to enhance viewer engagement and comprehension. Current sports commentary often lacks detailed statistical context, leaving fans, analysts, and sports bettors seeking deeper insights into game dynamics and player performances. For instance, when commentators mention a player "taking a step up," specific numerical support such as their points per game (PPG) would significantly enrich viewers' understanding of such claims.
 
-% create title (includes both anonymized and non-anonymized versions)
-\providecommand{\@maketitle}{}
-\renewcommand{\@maketitle}{%
-  \vbox{%
-    \hsize\textwidth
-    \linewidth\hsize
-    \vskip 0.1in
-    \@toptitlebar
+Furthermore, integrating comprehensive analytics and real-time visualizations can reduce inherent biases in commentary, especially those influenced by announcers' affiliations with certain teams. Objective, data-driven insights can provide a balanced perspective, offering viewers a clearer and more accurate picture of the game's progression.
+
+Additionally, sports bettors and dedicated fans frequently seek detailed statistics and predictive analyses beyond basic play-by-play commentary. Queries like how often the Los Angeles Lakers win when LeBron James scores ten or more points in the first quarter demonstrate a clear demand for sophisticated statistical context and predictive insights.
+
+To address these gaps, our project leverages audio recognition, large language models (LLMs), and statistical visualization methods to dynamically enrich basketball broadcasts with real-time analytics. Our approach aims to enhance viewer experience by providing meaningful statistical insights, reducing commentator bias, and satisfying the analytical curiosity of sports enthusiasts and bettors.
+
+We selected NBA basketball specifically due to the high frequency of plays per game, offering abundant opportunities for real-time analytics. Although other sports like football also have numerous plays, the clear temporal separation between plays in football already simplifies real-time analytics, resulting in extensive existing solutions. Additionally, the NBA provides a comprehensive and publicly available database of player statistics, further supporting robust analytics and visualization.
+
+\section{Methods}
+
+\paragraph{Audio Segmentation with Whisper}
+Our methodology begins with audio segmentation using OpenAI's Whisper model, an advanced automatic speech recognition system designed to transcribe and segment speech accurately. Whisper processes audio streams, efficiently identifying meaningful speech segments within short intervals (approximately 5 seconds). We selected Whisper for its robustness and reliability in handling varied speech patterns, ambient noise, and overlapping conversations common in sports commentary.
+
+\paragraph{Text-to-Variable Conversion via GPT-4 Mini}
+Each segmented audio clip from Whisper is then fed into GPT-4 mini, a powerful generative AI model. GPT-4 mini interprets the textual commentary, extracting structured variables essential for visualization decisions: whether a graph should be created, the type of graph (team-focused or player-focused), the home and away teams, the player's name, and the specific statistic mentioned. We chose GPT-4 mini due to its high accuracy and capability to contextualize complex, unstructured sports commentary, transforming it into actionable data.
+
+\paragraph{Visualization Generation with Matplotlib}
+The extracted variables from GPT-4 mini guide our custom-developed Python scripts utilizing Matplotlib for visualization. The scripts dynamically generate clear and informative graphs tailored to each commentary segment, providing viewers with immediate and relevant statistical insights.
+
+\paragraph{Error Filtering via Classification Model}
+To enhance accuracy and minimize erroneous visualizations, we developed a classification model based on BERT (Bidirectional Encoder Representations from Transformers). This model was trained on manually labeled commentary data, identifying instances where generated graphs were incorrect or unnecessary. By analyzing the original textual input used by GPT-4 mini, the BERT classifier effectively predicts potential visualization errors, allowing us to preemptively filter out unreliable graph generations. We chose BERT for its exceptional performance in text classification tasks, particularly for contextual and nuanced language common in sports commentary. Additionally, we prioritize omitting a potentially useful graph (false negative) rather than displaying a misleading visualization (false positive), ensuring the overall trustworthiness and accuracy of our analytics-driven visualizations.
+
+\section{Results}
+
+Figure 1 shows  an example of a result that would come to the screen. The commentator would say something along the lines of “OH-MY Lebron James with a HUGE block to seal the game”. Consequently, a visual of LeBron James’ blocks versus the league and opponent numbers would appear on the screen after the AI recognizes that a comment on a player’s statistics has been announced.
+
+In Figure 2 shows an example if during game, the commentary "Alvarado fires away and buries the three" was made, the resulting structure would be returned and fed into our algorithm:
+
+\begin{figure}
     \centering
-    {\LARGE\bf \@title\par}
-    \@bottomtitlebar
-    \if@submission
-      \begin{tabular}[t]{c}\bf\rule{\z@}{24\p@}
-        Anonymous Author(s) \\
-        Affiliation \\
-        Address \\
-        \texttt{email} \\
-      \end{tabular}%
-    \else
-      \def\And{%
-        \end{tabular}\hfil\linebreak[0]\hfil%
-        \begin{tabular}[t]{c}\bf\rule{\z@}{24\p@}\ignorespaces%
-      }
-      \def\AND{%
-        \end{tabular}\hfil\linebreak[4]\hfil%
-        \begin{tabular}[t]{c}\bf\rule{\z@}{24\p@}\ignorespaces%
-      }
-      \begin{tabular}[t]{c}\bf\rule{\z@}{24\p@}\@author\end{tabular}%
-    \fi
-    \vskip 0.3in \@minus 0.1in
-  }
-}
+    \includegraphics[width=0.5\linewidth]{LebronJames.jpg}
+    \caption{Data visualization provided after commentator states that Lebron made a block.}
+    \label{fig:enter-label}
+\end{figure}
 
-% add conference notice to bottom of first page
-\newcommand{\ftype@noticebox}{8}
-\newcommand{\@notice}{%
-  % give a bit of extra room back to authors on first page
-  \enlargethispage{2\baselineskip}%
-  \@float{noticebox}[b]%
-    \footnotesize\@noticestring%
-  \end@float%
-}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{JoseAlvarado.jpg}
+    \caption{Data visualization provided when commentator in New Orleans Pelicans, Brooklyn Nets game said "Alvarado fires away and buries the three."}
+    \label{fig:enter-label}
+\end{figure}
+\begin{quote}
+\verb|algo({"team":"BKN","opponent":"NOP","graph":true,|
+\verb|"player_graph":true,"players":["Jose Alvarado"],|
+\verb|"player_stat":"3P%","team_stat":null}, player_df, team_df)|
+\end{quote}
 
-% abstract styling
-\renewenvironment{abstract}%
-{%
-  \vskip 0.075in%
-  \centerline%
-  {\large\bf Abstract}%
-  \vspace{0.5ex}%
-  \begin{quote}%
-}
-{
-  \par%
-  \end{quote}%
-  \vskip 1ex%
-}
-
-% handle tweaks for camera-ready copy vs. submission copy
-\if@preprint
-  \newcommand{\@noticestring}{%
-    Preprint. Under review.%
-  }
-\else
-  \if@neuripsfinal
-    \newcommand{\@noticestring}{%
-      \@neuripsordinal\/ Conference on Neural Information Processing Systems
-      (NeurIPS \@neuripsyear).%, \@neuripslocation.%
-    }
-  \else
-    \newcommand{\@noticestring}{%
-      Submitted to \@neuripsordinal\/ Conference on Neural Information
-      Processing Systems (NeurIPS \@neuripsyear). Do not distribute.%
-    }
-
-    % hide the acknowledgements
-    \NewEnviron{hide}{}
-    \let\ack\hide
-    \let\endack\endhide
-
-    % line numbers for submission
-    \RequirePackage{lineno}
-    \linenumbers
-
-    % fix incompatibilities between lineno and amsmath, if required, by
-    % transparently wrapping linenomath environments around amsmath
-    % environments
-    \AtBeginDocument{%
-      \@ifpackageloaded{amsmath}{%
-        \newcommand*\patchAmsMathEnvironmentForLineno[1]{%
-          \expandafter\let\csname old#1\expandafter\endcsname\csname #1\endcsname
-          \expandafter\let\csname oldend#1\expandafter\endcsname\csname end#1\endcsname
-          \renewenvironment{#1}%
-                          {\linenomath\csname old#1\endcsname}%
-                          {\csname oldend#1\endcsname\endlinenomath}%
-        }%
-        \newcommand*\patchBothAmsMathEnvironmentsForLineno[1]{%
-          \patchAmsMathEnvironmentForLineno{#1}%
-          \patchAmsMathEnvironmentForLineno{#1*}%
-        }%
-        \patchBothAmsMathEnvironmentsForLineno{equation}%
-        \patchBothAmsMathEnvironmentsForLineno{align}%
-        \patchBothAmsMathEnvironmentsForLineno{flalign}%
-        \patchBothAmsMathEnvironmentsForLineno{alignat}%
-        \patchBothAmsMathEnvironmentsForLineno{gather}%
-        \patchBothAmsMathEnvironmentsForLineno{multline}%
-      }
-      {}
-    }
-  \fi
-\fi
+This is relevant to our problem since the viewer would likely wonder how the player has performed in such situations before. When Alvarado hits a 3-pointer, they likely search on Google or another engine for his 3-point percentage along with some more additional searches on other players to get a sense of how good he is playing in comparison to others in the league. Delivering these quick results in real-time would be beneficial for the viewer and their contextual knowledge of the situation.
 
 
-\endinput
+\section{Conclusion}
+
+Our approach successfully integrated audio segmentation, large language models, statistical visualization, and error filtering to enhance real-time analytics in NBA basketball broadcasts. Whisper effectively segmented commentary audio into actionable speech segments, while GPT-4 mini accurately translated these segments into structured variables essential for generating meaningful visual analytics. Matplotlib efficiently transformed these variables into insightful and contextually relevant visualizations, significantly enriching the viewer experience.
+
+However, the current implementation exhibits a noticeable delay—on the order of a few seconds—primarily due to the speed of audio segmentation and speech-to-text conversion by Whisper, presenting a critical area for improvement to ensure seamless real-time analytics during live broadcasts.
+
+The incorporation of a BERT-based classification model proved especially valuable, effectively identifying and filtering potential inaccuracies in visualization decisions. The model had a loss of 0.27 whereas initially, .23 of the data incorrectly produced a graph. Although the loss is similar to the initial error, it is important to note that initially, the error was that we were getting graphs when there should be no output for a graph, and now the loss from the model comes mostly from predicting good text (not likely to produce a wrong graph) as likely to produce a wrong graph. This is in line with our initial goal, as we would rather suppress a good graph than generate a faulty one.
+
+Our findings emphasize the practicality and effectiveness of leveraging advanced speech recognition, generative AI, and classification models for real-time sports analytics. While deep learning models demonstrated exceptional performance in contextual understanding and visualization generation, the combination with classical ML techniques like BERT provided an optimal balance between accuracy and computational efficiency.
+
+\paragraph{Next Steps}
+Future enhancements for our project include exploring deeper neural network architectures and additional fine-tuning strategies to further reduce errors and computational overhead, thereby optimizing real-time analytics for broader applications. Introducing more advanced, context-specific statistics tailored explicitly to particular gameplay scenarios would significantly enhance the depth and relevance of the visualizations provided.
+
+Additionally, we plan to generalize our framework to accommodate other sports, adapting our audio recognition, data extraction, and visualization methodologies to a variety of athletic contexts. This generalization would allow our approach to benefit a broader range of viewers and sports enthusiasts.
+
+To further tailor our approach, we aim to develop specialized visualization versions catering separately to sports bettors, who require detailed predictive analytics, and casual viewers, who seek simpler, more intuitive insights. Lastly, optimizing the system for reduced latency between speech recognition and graph output will enhance the real-time experience, making our analytics more seamless and immediately actionable during live broadcasts.
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{thebibliography}{9}
+
+\bibitem{palmieri2024nba}
+Eduardo Palmieri. \emph{NBA Player Stats Season 24/25}. 2024.  
+\url{https://www.kaggle.com/datasets/eduardopalmieri/nba-player-stats-season-2425}. Accessed: 2025-04-30.
+
+\bibitem{albi2024boscoscore}
+Alberto Filosa. \emph{NBA Boscoscore 2024-25}. 2024.  
+\url{https://www.kaggle.com/datasets/albi9702/nba-boscoscore-2024-25}. Accessed: 2025-04-30.
+
+\end{thebibliography}
+
+\end{document}
